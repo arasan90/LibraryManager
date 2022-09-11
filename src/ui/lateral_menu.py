@@ -1,5 +1,6 @@
 from lateral_menu_button import LateralMenuButton
 from PyQt6.QtWidgets import QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtCore import *
 
 class LateralMenu(QWidget):
     def __init__(self):
@@ -15,7 +16,7 @@ class LateralMenu(QWidget):
         layout.addWidget(self.books_button)
         layout.addWidget(self.movies_button)
         layout.addWidget(self.games_button)
-        layout.addStretch()
+        layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.setLayout(layout)
 
     def manage_books_button_click(self, is_checked):
