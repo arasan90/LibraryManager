@@ -12,7 +12,7 @@ class SearchBar(QWidget):
     def __init__(self):
         super().__init__()
         layout = QHBoxLayout()
-        self.search_label = QLabel("What are you looking for?")
+        self.search_label = QLabel("Search bar")
         self.search_field = QLineEdit()
         self.search_button = QPushButton("Search")
         layout.addWidget(self.search_label)

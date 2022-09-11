@@ -1,7 +1,7 @@
 """
 test
 """
-from lateral_menu_button import LateralMenuButton
+from .lateral_menu_button import LateralMenuButton
 from PyQt6.QtWidgets import QPushButton, QVBoxLayout, QWidget
 from PyQt6.QtCore import Qt
 
