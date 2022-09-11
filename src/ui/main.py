@@ -1,38 +1,44 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QHBoxLayout, QLineEdit, QLabel, QWidget, QDialog
+"""
+test
+"""
+from PyQt6.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QFrame
+from PyQt6.QtCore import Qt
 from qt_material import apply_stylesheet
 from lateral_menu import LateralMenu
+from search_bar import SearchBar
+
 
 # Subclass QMainWindow to customize your application's main window
 class MainWindow(QMainWindow):
+    """
+    test
+    """
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("My App")
-        lateral_menu = LateralMenu()
-        button = QPushButton("Press Me!")
-        button.clicked.connect(self.test)
-        lineEdit = QLineEdit()
-        lineEdit.setPlaceholderText("Test placeholder")
-        lineEdit.setStyleSheet("color: white;")
         widget = QWidget()
-        layout = QHBoxLayout()
-        layout.addWidget(lateral_menu)
-        layout.addWidget(QLabel("Test label"))
-        layout.addWidget(lineEdit)
-        layout.addWidget(button)
-        layout.addStretch()
-        widget.setLayout(layout)
+        lateral_menu = LateralMenu()
+        search_bar = SearchBar()
+        v_line = QFrame()
+        v_line.setFrameShape(QFrame.Shape.VLine)
+        v_line.setFrameShadow(QFrame.Shadow.Sunken)
+        root_layout = QHBoxLayout()
+        sub_layout = QVBoxLayout()
+        sub_layout.addWidget(search_bar)
+        sub_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        root_layout.addWidget(lateral_menu)
+        root_layout.addWidget(v_line)
+        root_layout.addLayout(sub_layout)
+        root_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        widget.setLayout(root_layout)
         menubar = self.menuBar()
         menubar.addMenu("File")
-        self.dialog = QDialog()
-        self.dialog.setModal(True)
 
         # Set the central widget of the Window.
         self.setCentralWidget(widget)
         self.setMenuWidget(menubar)
 
-    def test(self, checked):
-        self.dialog.show()
 
 app = QApplication([])
 window = MainWindow()

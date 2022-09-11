@@ -1,7 +1,15 @@
+"""
+test
+"""
 from lateral_menu_button import LateralMenuButton
 from PyQt6.QtWidgets import QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtCore import Qt
+
 
 class LateralMenu(QWidget):
+    """
+    test
+    """
     def __init__(self):
         super().__init__()
         layout: QVBoxLayout = QVBoxLayout()
@@ -15,21 +23,29 @@ class LateralMenu(QWidget):
         layout.addWidget(self.books_button)
         layout.addWidget(self.movies_button)
         layout.addWidget(self.games_button)
-        layout.addStretch()
+        layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.setLayout(layout)
 
-    def manage_books_button_click(self, is_checked):
+    def manage_books_button_click(self, _is_checked):
+        """
+        test
+        """
         self.books_button.setChecked(True)
         self.movies_button.setChecked(False)
         self.games_button.setChecked(False)
-        
 
-    def manage_movies_button_click(self, is_checked):
+    def manage_movies_button_click(self, _is_checked):
+        """
+        test
+        """
         self.books_button.setChecked(False)
         self.movies_button.setChecked(True)
         self.games_button.setChecked(False)
 
-    def manage_games_button_click(self, is_checked):
+    def manage_games_button_click(self, _is_checked):
+        """
+        test
+        """
         self.books_button.setChecked(False)
         self.movies_button.setChecked(False)
         self.games_button.setChecked(True)
