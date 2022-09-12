@@ -1,6 +1,6 @@
 import requests
 import json
-from types import SimpleNamespace
+# from types import SimpleNamespace
 
 
 def __init__():
@@ -12,12 +12,9 @@ class InfoRetriever():
         pass
 
     @staticmethod
-    def search():
-        response: requests.Response = requests.get("https://www.googleapis.com/books/v1/volumes?q=Licia Troisi")
+    def search(book_query: str):
+        response: requests.Response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={book_query}&maxResults=40&orderBy=relevance")
         raw_data: bytes = response.content
         data = json.loads(raw_data)
-        x = json.loads(raw_data, object_hook=lambda d: SimpleNamespace(**d))
-        for book in data["items"]:
-            print(book["volumeInfo"]["title"])
-        for book in x.items:
-            print(book.volumeInfo.title)
+        # x = json.loads(raw_data, object_hook=lambda d: SimpleNamespace(**d))
+        return data["items"]

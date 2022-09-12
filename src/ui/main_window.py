@@ -1,7 +1,9 @@
-from PyQt6.QtWidgets import QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QFrame, QPushButton, QDialog
-from PyQt6.QtCore import Qt, QObject, QThread, pyqtSignal
+from PyQt6.QtWidgets import QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QFrame, QPushButton
+# Add QThread in PyQt6.QtCore
+from PyQt6.QtCore import Qt, QObject, pyqtSignal
 from ui.lateral_menu import LateralMenu
 from ui.search_bar import SearchBar
+from ui.seach_result import SearchResult
 from logic.info_retriever import InfoRetriever
 
 
@@ -50,24 +52,6 @@ class MainWindow(QMainWindow):
         self.setMenuWidget(menubar)
 
     def add_new_item(self):
-        self.thread = QThread()
-        self.worker = Worker()
-        self.dialog = QDialog()
+        self.dialog = SearchResult()
         self.dialog.setModal(True)
-        self.new_item_btn.setText("Searching...")
-        self.worker.moveToThread(self.thread)
-        self.thread.started.connect(self.worker.run)
-        self.worker.finished.connect(self.thread.quit)
-        self.worker.finished.connect(self.worker.deleteLater)
-        self.thread.finished.connect(self.thread.deleteLater)
-        self.thread.start()
-        self.new_item_btn.setEnabled(False)
-        self.thread.finished.connect(
-            lambda: self.new_item_btn.setEnabled(True)
-        )
-        self.thread.finished.connect(
-            lambda: self.dialog.show()
-        )
-        self.thread.started.connect(
-            lambda: self.new_item_btn.setText("Add new item")
-        )
+        self.dialog.show()
