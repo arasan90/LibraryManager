@@ -33,6 +33,7 @@ class SearchResult(QDialog):
         self.search_list = QListWidget()
         self.search_bar = SearchBar()
         self.search_bar.search_button.clicked.connect(self.perform_search)
+        self.search_list.itemDoubleClicked.connect(self.open_details)
         layout.addWidget(self.search_bar, alignment=Qt.AlignmentFlag.AlignTop)
         layout.addWidget(self.search_list)
         self.setLayout(layout)
@@ -50,10 +51,21 @@ class SearchResult(QDialog):
         self.worker.finished.connect(self.check_results)
 
     def check_results(self, books_list):
+        self.books_list = books_list
         self.search_bar.search_button.setEnabled(True)
         self.search_bar.search_button.setText("Add new item")
         for book in books_list:
-            print(book["volumeInfo"]["title"])
-            self.search_list.addItem(QListWidgetItem(f'{book["volumeInfo"]["title"]}-{book["volumeInfo"]["authors"][0]}'))
+            authors = []
+            try:
+                for author in book["volumeInfo"]["authors"]:
+                    authors.append(author)
+            except Exception:
+                authors.append("Unknown")
+            finally:
+                self.search_list.addItem(QListWidgetItem(f'{book["volumeInfo"]["title"]} {authors}'))
         self.thread.quit()
         self.worker.deleteLater()
+
+    def open_details(self, item: QListWidgetItem):
+        table_index = self.search_list.row(item)
+        print(self.books_list[table_index])
