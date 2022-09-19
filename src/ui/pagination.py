@@ -42,3 +42,8 @@ class PaginationWidget(QWidget):
     def disable(self):
         self.next_btn.setEnabled(False)
         self.prev_btn.setEnabled(False)
+    
+    def reset(self):
+      self.disable()
+      self.page_number = 0
+      self.page_number_label.setText(str(self.page_number))

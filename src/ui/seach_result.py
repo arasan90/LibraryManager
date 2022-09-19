@@ -32,6 +32,7 @@ class SearchResult(QDialog):
     def __init__(self):
         super().__init__()
         self.page = 0
+        self.save_page_number: bool = False
         layout = QVBoxLayout()
         self.search_list = QListWidget()
         self.search_bar = SearchBar()
@@ -47,6 +48,10 @@ class SearchResult(QDialog):
 
     def perform_search(self, _is_checked):
         query: str = self.search_bar.search_field.text()
+        if not self.save_page_number:
+            self.page = 0
+            self.pagination_menu.reset()
+        self.save_page_number = False
         self.search_list.clear()
         self.pagination_menu.disable()
         self.thread = QThread()
@@ -62,11 +67,13 @@ class SearchResult(QDialog):
     def prev_page_results(self, _is_checked):
         self.page -= 1
         self.pagination_menu.prev_page()
+        self.save_page_number = True
         self.perform_search(False)
 
     def next_page_results(self, _is_checked):
         self.page += 1
         self.pagination_menu.next_page()
+        self.save_page_number = True
         self.perform_search(False)
 
     def add_results(self, code, books_list):
