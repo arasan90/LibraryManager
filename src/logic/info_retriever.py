@@ -17,8 +17,8 @@ class InfoRetriever():
         raw_data: bytes = response.content
         data = json.loads(raw_data)
         try:
-          volumes = data["items"]
+            volumes = data["items"]
         except Exception:
-          volumes = []
+            volumes = []
         finally:
-          return response.status_code, volumes
+            return response.status_code, volumes
