@@ -1,10 +1,5 @@
 import requests
 import json
-# from types import SimpleNamespace
-
-
-def __init__():
-    pass
 
 
 class InfoRetriever():
