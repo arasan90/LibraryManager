@@ -12,9 +12,13 @@ class InfoRetriever():
         pass
 
     @staticmethod
-    def search(book_query: str):
-        response: requests.Response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={book_query}&maxResults=40&orderBy=relevance")
+    def search(book_query: str, start_ix: int = 0):
+        response: requests.Response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={book_query}&maxResults=40&orderBy=relevance&startIndex={start_ix}")
         raw_data: bytes = response.content
         data = json.loads(raw_data)
-        # x = json.loads(raw_data, object_hook=lambda d: SimpleNamespace(**d))
-        return data["items"]
+        try:
+            volumes = data["items"]
+        except Exception:
+            volumes = []
+        finally:
+            return response.status_code, volumes
