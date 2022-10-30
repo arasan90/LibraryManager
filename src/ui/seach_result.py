@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QDialog, QListWidget, QVBoxLayout, QListWidgetItem, 
 from PyQt6.QtCore import Qt, pyqtSignal, QObject, QThread
 from ui.search_bar import SearchBar
 from ui.pagination import PaginationWidget
+from ui.book_details import BookDetails
 from logic.info_retriever import InfoRetriever
 
 
@@ -81,8 +82,6 @@ class SearchResult(QDialog):
         error_box.setText("Error retrieving data")
         if (200 == code):
             self.books_list = books_list
-            self.search_bar.search_button.setEnabled(True)
-            self.search_bar.search_button.setText("Add new item")
             for book in books_list:
                 authors = []
                 try:
@@ -95,9 +94,19 @@ class SearchResult(QDialog):
             self.pagination_menu.enable()
         else:
             error_box.exec()
+        self.search_bar.search_button.setEnabled(True)
+        self.search_bar.search_button.setText("Add new item")
         self.thread.quit()
         self.worker.deleteLater()
 
     def open_details(self, item: QListWidgetItem):
         table_index = self.search_list.row(item)
-        print(self.books_list[table_index])
+        book = self.books_list[table_index]
+        more_info_link = book["selfLink"]
+        summary = InfoRetriever.get_summary(more_info_link)
+        book_title = book["volumeInfo"]["title"]
+        book_authors = book["volumeInfo"]["authors"]
+        book_pic = book["volumeInfo"]["imageLinks"]["thumbnail"]
+        self.book_details = BookDetails(book_pic, book_title, book_authors, summary)
+        self.book_details.setModal(True)
+        self.book_details.show()

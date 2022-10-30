@@ -153,3 +153,32 @@ class TestInfoRetrieval(unittest.TestCase):
         status_code, books = InfoRetriever.search("test")
         self.assertEqual(200, status_code)
         self.assertIsNotNone(books)
+
+    @patch('logic.info_retriever.requests')
+    def test_picture_ok(self, mock_requests):
+        test_pic = b'\xff\xd8\xff'
+        # mock the response
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.content = test_pic
+        mock_requests.get.return_value = mock_response
+        picture = InfoRetriever.get_thumbnail("test")
+        self.assertIsNotNone(picture)
+        self.assertEqual(picture, test_pic)
+
+    @patch('logic.info_retriever.requests')
+    def test_get_summary_ok(self, mock_requests):
+        test_summary = 'Book summary'
+        # mock the response
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.content = """
+        {
+            "volumeInfo" : {
+                "description" : "Book summary"
+            }
+        }"""
+        mock_requests.get.return_value = mock_response
+        picture = InfoRetriever.get_summary("test")
+        self.assertIsNotNone(picture)
+        self.assertEqual(picture, test_summary)

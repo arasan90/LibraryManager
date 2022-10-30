@@ -17,3 +17,23 @@ class InfoRetriever():
         except Exception:
             volumes = []
         return response.status_code, volumes
+
+    @staticmethod
+    def get_summary(book_query: str):
+        summary: str = ""
+        try:
+            response: requests.Response = requests.get(book_query)
+            summary: bytes = json.loads(response.content)["volumeInfo"]["description"]
+        except Exception:
+            summary = ""
+        return summary
+
+    @staticmethod
+    def get_thumbnail(resource_link: str):
+        pic: bytes = ""
+        try:
+            response: requests.Response = requests.get(resource_link)
+            pic = response.content
+        except Exception:
+            pic = ""
+        return pic
